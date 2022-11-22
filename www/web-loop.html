@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://unpkg.com/jquery.terminal@2.x.x/js/jquery.terminal.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/jquery.terminal@2.x.x/css/jquery.terminal.min.css" />
+  <script>
+
+    // Executar quando a página terminar de carregar:
+    $(function() {
+
+        // Função em C para processar um comando.
+        // Único canal de comunicação do jq-terminal para C.
+        // Recebe um string e retorna void.
+        process = Module.cwrap('process_command', 'void', ['string']);
+
+        // Criar terminal, guardando referência para ele em Module.term:
+        Module.term = $('#terminal').terminal(
+            // Função chamada para cada comando:
+            function(command) {
+                if (command != '')
+                    process(command);
+            },
+            {
+                // Cabeçalho:
+                greetings:
+                    " __        __   _           _     ___   ___  ____   \n" +
+                    " \\ \\      / /__| |__       | |   / _ \\ / _ \\|  _ \\  \n" +
+                    "  \\ \\ /\\ / / _ \\ '_ \\ _____| |  | | | | | | | |_) | \n" +
+                    "   \\ V  V /  __/ |_) |_____| |__| |_| | |_| |  __/  \n" +
+                    "    \\_/\\_/ \\___|_.__/      |_____\\___/ \\___/|_|     \n" +
+                    "                                                   \n\n" +
+                    "(shell built using JQueryTerminal, by Jakub T. Jankiewicz <https://jcubic.pl/me>)\n"
+            }
+        );
+    });
+  </script>
+  <style>
+    #terminal {
+        height: 600px;
+        width: 90%;
+        margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="terminal">
+  </div>
+  
+  <script async type="text/javascript" src="shell.js"></script>
+</body>
+
+</html>
+
+
